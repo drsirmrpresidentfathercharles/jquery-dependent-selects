@@ -230,11 +230,10 @@
           # Copy option into sub select
           $newOption = $option.clone()
           $newOption.html($.trim(splitOptionName($newOption)[1..-1].join(options.separator)))
-          $newOption.attr('data-dependent-idid',$newId)
           $subSelect.append($newOption)
 
           # Change option to just parent location
-          $option.val('').html(name[0]).attr('data-dependent-name', name[0])
+          $option.val('').html(name[0]).attr('data-dependent-name', name[0]).attr('data-dependent-idid',$newId)
           # Remove option if already one for that parent location
           $option.remove() if $options.parent().find("[data-dependent-name='#{name[0]}']").length > 1
 

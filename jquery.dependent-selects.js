@@ -1,4 +1,3 @@
-
 /*
  * jQuery Dependent Selects v1.2.2
  * Copyright 2012 Mark J Smith, Simpleweb
@@ -166,13 +165,13 @@
         }
       });
     };
-    createNewSelect = function(name, $select, depth) {
+    createNewSelect = function(realName, name, $select, depth) {
       var $currentSelect, $labels, $newSelect, select_id;
       select_id = $select.attr('data-dependent-id');
-      if (($currentSelect = $("select[data-dependent-parent='" + name + "'][data-dependent-id='" + select_id + "']")).length > 0) {
+      if (($currentSelect = $("select[data-dependent-parent-name='" + realName + "'][data-dependent-id='" + select_id + "']")).length > 0) {
         return $currentSelect;
       }
-      $newSelect = $('<select class="dependent-sub"/>').attr('data-dependent-parent', name).attr('data-dependent-depth', depth).attr('data-dependent-input-name', $select.attr('data-dependent-input-name')).attr('data-dependent-id', select_id).addClass(options["class"]).append(placeholderOptionAtDepth(depth));
+      $newSelect = $('<select class="dependent-sub"/>').attr('data-dependent-parent', name).attr('data-dependent-depth', depth).attr('data-dependent-input-name', $select.attr('data-dependent-input-name')).attr('data-dependent-id', select_id).attr('data-dependent-parent-name', realName).addClass(options["class"]).append(placeholderOptionAtDepth(depth));
       if (options.labels === true) {
         $newSelect.attr('data-dependent-labels', $select.attr('data-dependent-labels'));
       }
@@ -258,12 +257,11 @@
         val = $option.val();
         if (name.length > 1) {
           $newId = createSelectSId();
-          $subSelect = createNewSelect($newId, $select, depth + 1);
+          $subSelect = createNewSelect(val, $newId, $select, depth + 1);
           $newOption = $option.clone();
           $newOption.html($.trim(splitOptionName($newOption).slice(1).join(options.separator)));
-          $newOption.attr('data-dependent-idid', $newId);
           $subSelect.append($newOption);
-          $option.val('').html(name[0]).attr('data-dependent-name', name[0]);
+          $option.val('').html(name[0]).attr('data-dependent-name', name[0]).attr('data-dependent-idid', $newId);
           if ($options.parent().find("[data-dependent-name='" + name[0] + "']").length > 1) {
             $option.remove();
           }

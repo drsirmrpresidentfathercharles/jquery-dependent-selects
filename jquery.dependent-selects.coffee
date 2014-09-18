@@ -133,16 +133,17 @@
           $(@).find('option:first').attr('selected', 'selected')
           hideSelect $(@)
 
-    createNewSelect = (name, $select, depth) ->
+    createNewSelect = (realName,name, $select, depth) ->
       select_id = $select.attr('data-dependent-id')
 
-      if ($currentSelect = $("select[data-dependent-parent='#{name}'][data-dependent-id='#{select_id}']")).length > 0
+      if ($currentSelect = $("select[data-dependent-parent-name='#{realName}'][data-dependent-id='#{select_id}']")).length > 0
         return $currentSelect
 
       $newSelect = $('<select class="dependent-sub"/>').attr('data-dependent-parent', name)
                    .attr('data-dependent-depth', depth)
                    .attr('data-dependent-input-name', $select.attr('data-dependent-input-name'))
                    .attr('data-dependent-id', select_id)
+                   .attr('data-dependent-parent-name', realName)
                    .addClass(options.class)
                    .append(placeholderOptionAtDepth(depth))
 
@@ -226,7 +227,7 @@
         if name.length > 1
           # Create sub select
           $newId = createSelectSId()
-          $subSelect = createNewSelect($newId, $select, depth + 1)
+          $subSelect = createNewSelect(val,$newId, $select, depth + 1)
           # Copy option into sub select
           $newOption = $option.clone()
           $newOption.html($.trim(splitOptionName($newOption)[1..-1].join(options.separator)))
